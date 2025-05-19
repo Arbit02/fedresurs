@@ -6,7 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $cookiesJson = file_get_contents($filePath);
         $cookies = json_decode($cookiesJson, true);
 
-        // Формируем строку с куками
         $cookieParts = [];
         foreach ($cookies as $cookie) {
             $cookieParts[] = $cookie['name'] . '=' . $cookie['value'];
