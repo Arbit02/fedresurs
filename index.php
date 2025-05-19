@@ -1,13 +1,19 @@
 <?php
-
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
+    shell_exec('python main.py');
     $filePath = 'fedresurs_cookies.json';
     if (file_exists($filePath)) {
-        header('Content-Type: application/json');
-        header('Content-Disposition: attachment; filename="fedresurs_cookies.json"');
-        header('Content-Length: ' . filesize($filePath));
-        readfile($filePath);
+        $cookiesJson = file_get_contents($filePath);
+        $cookies = json_decode($cookiesJson, true);
+
+        // Формируем строку с куками
+        $cookieParts = [];
+        foreach ($cookies as $cookie) {
+            $cookieParts[] = $cookie['name'] . '=' . $cookie['value'];
+        }
+        $cookiesString = implode('; ', $cookieParts);
+        header('Content-Type: text/plain');
+        echo $cookiesString;
         exit;
     } else {
         http_response_code(404);
